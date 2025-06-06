@@ -10,17 +10,12 @@ class SpamHamClassifier(nn.Module):
 
     def __init__(self, model_name: str = "bert-base-uncased", num_labels: int = 2):
         super().__init__()
-        # pretrained 모델 불러오기 (classification head 포함)
         self.model = AutoModelForSequenceClassification.from_pretrained(
             model_name,
             num_labels=num_labels
         )
 
     def forward(self, input_ids, attention_mask, labels=None):
-        """
-        labels를 넣으면 (loss, logits, …) 를 반환.
-        labels를 None으로 두면 (logits, …) 를 반환.
-        """
         outputs = self.model(
             input_ids=input_ids,
             attention_mask=attention_mask,

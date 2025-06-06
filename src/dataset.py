@@ -11,7 +11,6 @@ class SpamHamDataset(Dataset):
     - labels (0=ham, 1=spam)
     을 반환하는 PyTorch Dataset
     """
-
     def __init__(
         self,
         csv_path: str,
@@ -20,7 +19,6 @@ class SpamHamDataset(Dataset):
     ):
         super().__init__()
         self.df = pd.read_csv(csv_path)
-        # HuggingFace 토크나이저 불러오기
         self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
         self.max_length = max_length
 
@@ -32,7 +30,6 @@ class SpamHamDataset(Dataset):
         text = str(row["text"])
         label = int(row["label_id"])
 
-        # 토크나이징: padding & truncation
         encoding = self.tokenizer(
             text,
             padding="max_length",
@@ -40,17 +37,14 @@ class SpamHamDataset(Dataset):
             max_length=self.max_length,
             return_tensors="pt",
         )
-
-        # encoding["input_ids"], encoding["attention_mask"]는 shape=(1, max_length)이므로 squeeze 처리
         item = {
-            "input_ids": encoding["input_ids"].squeeze(0),        # torch.LongTensor (max_length,)
-            "attention_mask": encoding["attention_mask"].squeeze(0),  # torch.LongTensor (max_length,)
+            "input_ids": encoding["input_ids"].squeeze(0),
+            "attention_mask": encoding["attention_mask"].squeeze(0),
             "labels": torch.tensor(label, dtype=torch.long),         # 0 또는 1
         }
         return item
 
 
-# DataLoader를 간단히 반환해주는 helper 함수
 from torch.utils.data import DataLoader
 
 def get_dataloader(

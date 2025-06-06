@@ -15,9 +15,6 @@ def load_and_split_excel(
 
     # 1) Excel 로드 (openpyxl 엔진 사용)
     df = pd.read_excel(input_path, engine='xlrd')
-
-    # 컬럼명 통일: ['label', 'text'] 형태라고 가정
-    # 실제 엑셀 칼럼명이 다르면 수정 필요
     df.columns = ['label', 'text']
 
     # 2) 결측치 제거 & 소문자 변환
@@ -51,7 +48,6 @@ def load_and_split_excel(
     valid_path = os.path.join(output_dir, 'valid.csv')
     test_path  = os.path.join(output_dir, 'test.csv')
 
-    # CSV로 저장 (UTF-8-sig: Excel에서 한글 깨짐 방지용)
     train_df.to_csv(train_path, index=False, encoding='utf-8-sig')
     valid_df.to_csv(valid_path, index=False, encoding='utf-8-sig')
     test_df.to_csv(test_path, index=False, encoding='utf-8-sig')
@@ -63,7 +59,6 @@ def load_and_split_excel(
 
 
 if __name__ == "__main__":
-    # 실행 시점을 프로젝트 루트로 가정
     # data/raw/spamhamdata.xls → data/processed/ 하위에 CSV 저장
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     raw_excel_path = os.path.join(project_root, "data", "raw", "spamhamdata.xls")

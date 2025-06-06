@@ -2,7 +2,7 @@ import os
 import torch
 from transformers import AutoTokenizer
 
-from model import SpamHamClassifier
+from src.model import SpamHamClassifier
 
 def predict_single_text(text: str, model, tokenizer, device="cpu", max_length: int = 128):
     """

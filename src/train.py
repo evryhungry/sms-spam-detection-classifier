@@ -7,9 +7,9 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 from tqdm.auto import tqdm
 
-from dataset import SpamHamDataset
-from model import SpamHamClassifier
-from utils import set_seed, compute_accuracy
+from src.dataset import SpamHamDataset
+from src.model import SpamHamClassifier
+from src.utils import set_seed, compute_accuracy
 
 
 def train_loop(model, dataloader, optimizer, scheduler, device):
@@ -63,8 +63,6 @@ def valid_loop(model, dataloader, device):
 
 
 def main():
-    # ──────────────────────────────────────────────────────────────────────────
-    # 1) 설정
     set_seed(42)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device:", device)
@@ -83,7 +81,6 @@ def main():
     learning_rate = 2e-5
     max_length = 128
 
-    # 2) 데이터로더 준비
     train_dataset = SpamHamDataset(
         csv_path=train_csv,
         tokenizer_name=model_name,
@@ -111,11 +108,10 @@ def main():
         num_training_steps=total_steps,
     )
 
-    # checkpoints 저장 폴더
     checkpoint_dir = os.path.join(project_root, "checkpoints")
     os.makedirs(checkpoint_dir, exist_ok=True)
 
-    # 4) 학습 및 검증 루프
+    # 학습 및 검증 루프
     best_valid_acc = 0.0
     for epoch in range(1, epochs + 1):
         print(f"\n========== Epoch {epoch}/{epochs} ==========")
@@ -128,9 +124,9 @@ def main():
         # 5) 모델 저장 (가장 높은 valid_acc일 때)
         if valid_acc > best_valid_acc:
             best_valid_acc = valid_acc
-            save_path = os.path.join(checkpoint_dir, f"best_model_epoch{epoch}.pt")
-            torch.save(model.state_dict(), save_path)
-            print(f"▶ New best model saved ▶ {save_path}")
+        save_path = os.path.join(checkpoint_dir, f"best_model_epoch{epoch}.pt")
+        torch.save(model.state_dict(), save_path)
+        print(f"▶ New model saved ▶ {save_path}")
 
     print("\nTraining finished.")
     print(f"Best Valid Accuracy = {best_valid_acc:.4f}")
