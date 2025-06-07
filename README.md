@@ -52,7 +52,7 @@
 ```
 sms-spam-detection-classifier
 ├── checkpoints
-│   ├── best_model_epochX.pt
+│   └── best_model_epochX.pt
 ├── data
 │   ├── processed
 │   │   ├── test.csv
@@ -61,6 +61,12 @@ sms-spam-detection-classifier
 │   └── raw
 │       ├── spamhamdata.xls
 │       └── spamhamdata.xlsx
+├── experiments
+│   ├── results
+│   │   └── metrics.csv
+│   ├── evaluate.py
+│   └── compare_models.py
+├── data
 ├── notebooks
 │   └── data_exploration.ipynb
 ├── README.md
