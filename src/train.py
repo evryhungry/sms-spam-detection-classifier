@@ -95,7 +95,7 @@ def main():
     train_loader = DataLoader(train_dataset, batch_size=train_batch_size, shuffle=True)
     valid_loader = DataLoader(valid_dataset, batch_size=valid_batch_size, shuffle=False)
 
-    # 3) 모델, 옵티마이저, 스케줄러 정의
+    # 모델, 옵티마이저, 스케줄러 정의
     model = SpamHamClassifier(model_name=model_name, num_labels=2)
     model.to(device)
 
@@ -121,7 +121,7 @@ def main():
         print(f"▶ Train Loss : {train_loss:.4f}")
         print(f"▶ Valid Loss : {valid_loss:.4f} | Valid Acc : {valid_acc:.4f}")
 
-        # 5) 모델 저장 (가장 높은 valid_acc일 때)
+        # 모델 저장
         if valid_acc > best_valid_acc:
             best_valid_acc = valid_acc
         save_path = os.path.join(checkpoint_dir, f"best_model_epoch{epoch}.pt")

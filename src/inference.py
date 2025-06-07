@@ -38,8 +38,7 @@ if __name__ == "__main__":
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     checkpoint_dir = os.path.join(project_root, "checkpoints")
 
-    # 가장 최근에 저장된 best_model을 자동으로 찾기 위해, 확장자가 .pt인 파일 중 이름이 가장 뒤인 것을 가져오도록 해도 되고
-    # 예시에서는 epoch3로 저장했다고 가정
+    # 가장 최근에 저장된 best_model을 자동으로 찾기 위해, 확장자가 .pt인 파일 중 이름이 가장 뒤인 것을 가져오도록 함 -> 일단 하드코딩으로 모델을 가정
     model_path = os.path.join(checkpoint_dir, "best_model_epoch3.pt")
 
     # 모델 초기화 & 가중치 로드
@@ -53,7 +52,6 @@ if __name__ == "__main__":
         "Congrats! You have won a free ticket to Bahamas. Reply YES to claim.",
     ]
 
-    # 3) 예측 수행
     for txt in sample_texts:
         pred = predict_single_text(txt, model, tokenizer, device, max_length=128)
         label_str = "spam" if pred == 1 else "ham"

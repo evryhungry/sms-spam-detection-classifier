@@ -13,7 +13,7 @@ def load_and_split_excel(
     random_state: int = 42,
 ):
 
-    # 1) Excel 로드 (openpyxl 엔진 사용)
+    # 1) Excel 로드 (xlrd 엔진 사용 -> xls 를 읽기 위함)
     df = pd.read_excel(input_path, engine='xlrd')
     df.columns = ['label', 'text']
 
