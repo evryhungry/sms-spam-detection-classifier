@@ -10,14 +10,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import LinearSVC
 from sklearn.metrics import precision_score, recall_score, f1_score
 from sklearn.model_selection import train_test_split
-from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-# 디바이스 설정
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# 데이터 파일 경로 (프로젝트 구조에 맞게 수정)
-CSV_PATH = 'data/smsspam.csv'
-# 나의 모델 체크포인트 경로
-MY_MODEL_CHECKPOINT = 'checkpoints/spamhamclassifier.pt'
+CSV_PATH = 'data/processed/test.csv'
+MY_MODEL_CHECKPOINT = 'checkpoints/best_model_epoch1.pt'
 
 # 평가 지표 계산 함수
 def compute_metrics(y_true, y_pred):
@@ -25,13 +22,13 @@ def compute_metrics(y_true, y_pred):
         'precision': precision_score(y_true, y_pred),
         'recall':    recall_score(y_true, y_pred),
         'f1':        f1_score(y_true, y_pred),
-        'accuracy':  compute_accuracy(y_pred, y_true)
+        'accuracy':  compute_accuracy(y_true, y_pred)
     }
 
 # 1) 나의 모델(SpamHamClassifier) 추론
 def run_my_model(test_texts):
     set_seed(42)
-    tokenizer = DistilBertTokenizerFast.from_pretrained('bert-base-uncased')
+    tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
     model = SpamHamClassifier(model_name='bert-base-uncased', num_labels=2)
     # 체크포인트 로드
     model.load_state_dict(torch.load(MY_MODEL_CHECKPOINT, map_location=DEVICE))
@@ -75,8 +72,8 @@ def run_tfidf_svm(train_texts, train_labels, test_texts):
 # 3) Transformer(BERT) Zero-shot 추론
 def run_transformer(test_texts):
     set_seed(42)
-    tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
-    model     = DistilBertForSequenceClassification.from_pretrained(
+    tokenizer = AutoTokenizer.from_pretrained('distilbert-base-uncased')
+    model     = AutoModelForSequenceClassification.from_pretrained(
                     'distilbert-base-uncased', num_labels=2
                 ).to(DEVICE).eval()
 
