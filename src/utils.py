@@ -14,3 +14,6 @@ def set_seed(seed: int = 42):
 def compute_accuracy(preds, labels):
     pred_labels = np.argmax(preds, axis=1)
     return (pred_labels == labels).mean()
+
+def compute_accuracy_compare(preds, labels):
+    return (np.array(preds) == np.array(labels)).mean()
