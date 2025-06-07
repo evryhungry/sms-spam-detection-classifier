@@ -86,6 +86,7 @@ sms-spam-detection-classifier
 ```
 
 ## 설치-및-실행installation--usage
+### Python 3.10 버전을 이용
 1. 프로젝트 클론 & 디렉터리 이동  
    ```bash
    git clone https://github.com/username/spam-sms-classifier.git
